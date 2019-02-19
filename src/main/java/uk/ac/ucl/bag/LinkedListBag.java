@@ -3,7 +3,7 @@ package uk.ac.ucl.bag;
 import java.util.Iterator;
 
 public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
-    private static class Element<E extends Comparable> {
+    private static class Element<E> {
         public E value;
         public int occurrences;
         public Element<E> next;
@@ -16,7 +16,7 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
     }
 
     private int maxSize;
-    private Element head;
+    private Element<T> head;
     private int listSize;
 
 
@@ -45,11 +45,11 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
             this.listSize ++;
             return;
         }
-        Element currentNode = this.head;
+        Element<T> currentNode = this.head;
 
         while (currentNode != null)
             {
-                if (currentNode.value.compareTo(value) == 0) // Must use compareTo to compare values.
+                if (currentNode.value.equals(value)) // Must use compareTo to compare values.
                 {
                     currentNode.occurrences++;
                     return;
@@ -57,22 +57,22 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
                 currentNode = currentNode.next;
             }
 
-            if (this.listSize < maxSize) {
-                Element newNode = new Element(value, 1, null);
-                Element endNode = this.head;
+        if (this.listSize < maxSize) {
+            Element<T> newNode = new Element(value, 1, null);
+            Element<T> endNode = this.head;
 
-                while (endNode.next != null) {
-                    endNode = endNode.next;
-                }
-
-                endNode.next = newNode;
-
-                this.listSize ++;
-
-            } else {
-                throw new BagException("Bag is full");
+            while (endNode.next != null) {
+                endNode = endNode.next;
             }
+
+            endNode.next = newNode;
+
+            this.listSize ++;
+
+        } else {
+            throw new BagException("Bag is full");
         }
+    }
 
     public void addWithOccurrences(T value, int occurrences) throws BagException
     {
@@ -84,11 +84,11 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
 
     public boolean contains(T value)
     {
-        Element currentNode = this.head;
+        Element<T> currentNode = this.head;
 
         while (currentNode != null ){
 
-            if (currentNode.value.compareTo(value) == 0)
+            if (currentNode.value.equals(value))
             {
                 return true;
             }
@@ -98,11 +98,11 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
 
     public int countOf(T value)
     {
-        Element currentNode = this.head;
+        Element<T> currentNode = this.head;
 
         while (currentNode != null)
         {
-            if (currentNode.value.compareTo(value) == 0)
+            if (currentNode.value.equals(value))
             {
                 return currentNode.occurrences;
             }
@@ -112,18 +112,21 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
 
     public void remove(T value)
     {
-        Element currentNode = this.head;
-        Element previousNode = this.head;
+        Element<T> currentNode = this.head;
+        Element<T> previousNode = this.head;
         while (currentNode != null){
-            if (currentNode.value.compareTo(value) == 0)
+            if (currentNode.value.equals(value))
             {
                 currentNode.occurrences --;
                 this.listSize--;
                 if (currentNode.occurrences == 0){
                     // Remove Node
+                    previousNode.next = currentNode.next;
                     return;
                 }
             }
+            previousNode = currentNode;
+            currentNode = currentNode.next;
         }
     }
 
@@ -137,7 +140,7 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
         return this.listSize;
     }
 
-    private class ArrayBagUniqueIterator implements Iterator<T> {
+    private class LinkedListBagUniqueIterator implements Iterator<T> {
         private int index = 0;
 
 
@@ -147,13 +150,11 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
         }
 
         public T next() {
-            Element currentNode = head;
-            index++;
-
-
+            Element<T> currentNode = head;
             for (int i = 0; i < index; i++){
                 currentNode = currentNode.next;
             }
+            index++;
 
             return currentNode.value;
 
@@ -163,21 +164,21 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
 
     public Iterator<T> iterator()
     {
-        return new ArrayBagUniqueIterator();
+        return new LinkedListBagUniqueIterator();
     }
 
     /*
       This class implements an additional iterator that returns all values in a bag including a value for each copy.
       It is also a nested inner class.
      */
-    private class ArrayBagIterator implements Iterator<T>
+    private class LinkedListBagIterator implements Iterator<T>
     {
         private int index = 0;
         private int count = 0;
 
         public boolean hasNext()
         {
-            Element currentNode = head;
+            Element<T> currentNode = head;
 
             if (index < listSize) {
                 for (int i = 0; i < index; i++){
@@ -192,28 +193,29 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
 
         public T next()
         {
-            Element currentNode = head;
+            Element<T> currentNode = head;
             for (int i = 0; i < index; i++){
                 currentNode = currentNode.next;
             }
 
             if (count < currentNode.occurrences)
             {
-                T value = currentNode.value;
+                T value = (T) currentNode.value;
                 count++;
                 return value;
             }
             count = 1;
             index++;
             currentNode = currentNode.next;
-
+            T value = currentNode.value;
+            System.out.println(value);
             return currentNode.value;
         }
     }
 
     public Iterator<T> allOccurrencesIterator()
     {
-        return new ArrayBagIterator();
+        return new LinkedListBagIterator();
     }
 }
-}
+

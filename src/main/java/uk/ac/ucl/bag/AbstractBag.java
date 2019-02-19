@@ -37,4 +37,6 @@ public abstract class AbstractBag<T extends Comparable> implements Bag<T>
     return result;
   }
 
+  public String toString() extends
+
 }
