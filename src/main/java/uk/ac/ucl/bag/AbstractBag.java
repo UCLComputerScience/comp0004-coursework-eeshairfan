@@ -37,6 +37,67 @@ public abstract class AbstractBag<T extends Comparable> implements Bag<T>
     return result;
   }
 
-  public String toString() extends
+  public void removeAllCopies() throws BagException {
+      Bag<T> result = BagFactory.getInstance().getBag();
+      for (T value: this) {
+          if(this.countOf(value) > 1){
+              int count = this.countOf(value) - 1;
+              for(int i = 0; i < count; i++){
+                  this.remove(value);
+              }
+          }
+      }
+
+  }
+
+  public Bag<T> subtract(Bag<T> bag) throws BagException {
+      /*
+      returns a new Bag containing all
+      values and occurrences that occur in the this bag but not the argument bag.
+      */
+
+      Bag<T> result = BagFactory.getInstance().getBag();
+      for (T value : this)
+      {
+          result.addWithOccurrences(value, this.countOf(value));
+      }
+      for (T value : bag)
+      {
+          if (result.contains(value)){
+              result.remove(value);
+              if (result.countOf(value) == 0){
+
+
+              }
+          }
+
+      }
+      return result;
+  }
+
+
+
+  @Override
+  public String toString() {
+      String strRep = "";
+
+
+      boolean first = true;
+
+      strRep = "[";
+      for (T value : this)
+      {
+          if (!first) { strRep = strRep + ", "; }
+          first = false;
+          strRep = strRep + value + ": " + this.countOf(value);
+      }
+      strRep = strRep + "]";
+
+
+      return strRep;
+
+  }
 
 }
+
+

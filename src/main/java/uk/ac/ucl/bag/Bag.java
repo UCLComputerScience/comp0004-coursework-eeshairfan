@@ -105,6 +105,26 @@ public interface Bag<T extends Comparable> extends Iterable<T>
    * returning each occurrence. This iterator will return the full set of values including all the copies.
    * @return The new Iterator.
    */
+
+  void removeAllCopies() throws BagException;
+
+  /**
+   * It makes sure that the occurrence count of all values stored in a Bag is set to one.
+   * @throws BagException
+   */
+
+  Bag<T> subtract(Bag<T> bag) throws BagException;
+
+  /**
+   * Returns a new Bag containing all values and occurrences that occur in the this
+   * bag but not the argument bag.
+   *
+   * @param
+   * @return The new Bag.
+   * @throws BagException If the bag becomes full while adding.
+   */
+
+
   public Iterator<T> allOccurrencesIterator();
 
   /*
