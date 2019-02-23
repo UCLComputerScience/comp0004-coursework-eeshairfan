@@ -1,5 +1,4 @@
 package uk.ac.ucl.bag;
-
 import java.util.Iterator;
 
 /**
@@ -15,7 +14,8 @@ import java.util.Iterator;
  * iterator returning each value in the Bag in turn.
  *
  * @param <T> The type of the objects (values) stored in the Bag. The object must be an instance of a class that
- * implements the Comparable interface from the standard Java Class Library. This is what the syntax
+ * implements the Comparable interface from
+the standard Java Class Library. This is what the syntax
  * <T extends Comparable> means, constraining the valid instantiations of T to a type that conforms to Comparable.
  * As a bag implementation requires object values to be compared, an object stored in a bag must support the
  * compareTo method defined by the Comparable interface.
@@ -99,6 +99,24 @@ public interface Bag<T extends Comparable> extends Iterable<T>
    */
   Bag<T> createMergedAllOccurrences(Bag<T> b) throws BagException;
 
+
+
+  /**
+   *
+   * @throws BagException
+   */
+  void removeAllCopies() throws BagException;
+
+
+
+  /**
+   *
+   * @param bag
+   * @return
+   * @throws BagException
+   */
+  Bag<T> subtract(Bag<T> bag) throws BagException;
+
   /**
    * Create an iterator that will iterate through every value and every occurrence of each value.
    * The default iterator method (declared by Iterator) will iterate through each value only without
@@ -106,26 +124,8 @@ public interface Bag<T extends Comparable> extends Iterable<T>
    * @return The new Iterator.
    */
 
-  void removeAllCopies() throws BagException;
-
-  /**
-   * It makes sure that the occurrence count of all values stored in a Bag is set to one.
-   * @throws BagException
-   */
-
-  Bag<T> subtract(Bag<T> bag) throws BagException;
-
-  /**
-   * Returns a new Bag containing all values and occurrences that occur in the this
-   * bag but not the argument bag.
-   *
-   * @param
-   * @return The new Bag.
-   * @throws BagException If the bag becomes full while adding.
-   */
-
-
   public Iterator<T> allOccurrencesIterator();
+
 
   /*
   This method declaration is inherited from interface Iterator, so not redeclared here.

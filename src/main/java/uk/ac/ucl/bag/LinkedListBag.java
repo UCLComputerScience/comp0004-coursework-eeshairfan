@@ -119,7 +119,7 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
             {
                 currentNode.occurrences --;
                 this.listSize--;
-                if (currentNode.equals(this.head)){
+                if (currentNode.equals(this.head) && this.head.occurrences == 0){
                     this.head = currentNode.next;
                     return;
                 }
@@ -205,7 +205,7 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
 
             if (count < currentNode.occurrences)
             {
-                T value = (T) currentNode.value;
+                T value = currentNode.value;
                 count++;
                 return value;
             }

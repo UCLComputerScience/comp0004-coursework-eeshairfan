@@ -82,11 +82,13 @@ public class Main
       System.out.print("createMergedAllUnique:       ");
       Bag<String> bag5 = bag1.createMergedAllUnique(bag3);
       print(bag5);
-      System.out.println(bag4.toString());
+      System.out.println(bag4);
+      System.out.println(bag3);
       bag4.removeAllCopies();
-      System.out.println(bag4.toString());
+      System.out.println(bag4);
       Bag<String> bag6 = bag4.subtract(bag3);
-      System.out.println(bag6.toString());
+      System.out.println(bag6);
+
     }
     catch (BagException e)
     {

@@ -56,21 +56,21 @@ public abstract class AbstractBag<T extends Comparable> implements Bag<T>
       values and occurrences that occur in the this bag but not the argument bag.
       */
 
+      Bag<T> intermediate_result = BagFactory.getInstance().getBag();
       Bag<T> result = BagFactory.getInstance().getBag();
+
       for (T value : this)
       {
-          result.addWithOccurrences(value, this.countOf(value));
+          intermediate_result.addWithOccurrences(value, this.countOf(value));
       }
       for (T value : bag)
       {
-          if (result.contains(value)){
-              result.remove(value);
-              if (result.countOf(value) == 0){
-
-
-              }
+          intermediate_result.remove(value);
+      }
+      for (T value: intermediate_result){
+          if (intermediate_result.countOf(value) != 0){
+              result.addWithOccurrences(value, intermediate_result.countOf(value));
           }
-
       }
       return result;
   }
