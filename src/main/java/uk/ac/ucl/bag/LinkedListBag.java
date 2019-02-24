@@ -49,7 +49,7 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
 
         while (currentNode != null)
         {
-            if (currentNode.value.equals(value))
+            if (currentNode.value.equals(value)) // Must use compareTo to compare values.
             {
                 currentNode.occurrences++;
                 return;
@@ -92,6 +92,7 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
             {
                 return true;
             }
+            currentNode = currentNode.next;
         }
         return false;
     }
@@ -106,6 +107,7 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
             {
                 return currentNode.occurrences;
             }
+            currentNode = currentNode.next;
         }
         return 0;
     }
@@ -118,17 +120,20 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
             if (currentNode.value.equals(value))
             {
                 currentNode.occurrences --;
-                this.listSize--;
+
                 if (currentNode.equals(this.head) && this.head.occurrences == 0){
+                    this.listSize--;
                     this.head = currentNode.next;
                     return;
                 }
 
                 if (currentNode.occurrences == 0){
                     // Remove Node
+                    this.listSize--;
                     previousNode.next = currentNode.next;
                     return;
                 }
+                return;
             }
             previousNode = currentNode;
             currentNode = currentNode.next;
@@ -213,7 +218,6 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
             index++;
             currentNode = currentNode.next;
             T value = currentNode.value;
-            System.out.println(value);
             return currentNode.value;
         }
     }

@@ -1,5 +1,5 @@
 package uk.ac.ucl.bag;
-import java.io.*;
+
 import java.util.Iterator;
 
 /**
@@ -39,7 +39,7 @@ public class Main
 
   public void go()
   {
-    factory.setBagClass("MapBag");
+    factory.setBagClass("LinkedListBag");
 
     try
     {
@@ -51,9 +51,12 @@ public class Main
       bag1.add("abc");
       bag1.add("def");
       bag1.add("hij");
+      bag1.remove("def");
       System.out.print("bag1 all unique:             ");
       print(bag1);
       System.out.print("bag1 all:                    ");
+      printAll(bag1);
+      System.out.println(bag1);
       printAll(bag1);
 
       bag2 = factory.getBag();
@@ -61,6 +64,8 @@ public class Main
       bag2.add("def");
       bag2.add("def");
       bag2.add("klm");
+      bag2.remove("def");
+      System.out.println(bag2);
       System.out.print("bag2 all unique:             ");
       print(bag2);
       System.out.print("bag2 all:                    ");
@@ -85,14 +90,15 @@ public class Main
       print(bag5);
       System.out.println(bag4);
       System.out.println(bag3);
-      bag4.removeAllCopies();
-      System.out.println(bag4);
       Bag<String> bag6 = bag4.subtract(bag3);
       System.out.println(bag6);
+      bag3.removeAllCopies();
+      System.out.println(bag3);
+      bag6.saveFile("bag6");
       Bag<String> bag7 = factory.getBag();
-      bag4.saveFile("bag4");
-      bag7 = bag7.createBag("bag4");
+      bag7 = bag7.createBag("bag6");
       System.out.println(bag7);
+
     }
     catch (BagException e)
     {

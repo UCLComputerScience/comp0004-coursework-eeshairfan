@@ -40,7 +40,6 @@ public abstract class AbstractBag<T extends Comparable> implements Bag<T>
   }
 
   public void removeAllCopies() throws BagException {
-      Bag<T> result = BagFactory.getInstance().getBag();
       for (T value: this) {
           if(this.countOf(value) > 1){
               int count = this.countOf(value) - 1;
@@ -59,22 +58,19 @@ public abstract class AbstractBag<T extends Comparable> implements Bag<T>
       */
 
       Bag<T> intermediate_result = BagFactory.getInstance().getBag();
-      Bag<T> result = BagFactory.getInstance().getBag();
 
-      for (T value : this)
-      {
+      for (T value: this){
+
           intermediate_result.addWithOccurrences(value, this.countOf(value));
       }
-      for (T value : bag)
-      {
-          intermediate_result.remove(value);
-      }
-      for (T value: intermediate_result){
-          if (intermediate_result.countOf(value) != 0){
-              result.addWithOccurrences(value, intermediate_result.countOf(value));
+      for (T value: bag){
+          for(int i = 0; i < bag.countOf(value); i++){
+              intermediate_result.remove(value);
           }
+
       }
-      return result;
+
+      return intermediate_result;
   }
 
   public void saveFile(String name) throws BagException {
