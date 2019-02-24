@@ -103,18 +103,33 @@ public abstract class AbstractBag<T extends Comparable> implements Bag<T>
       }
   }
 
-  /*
+
 
   public Bag<T> createBag(String name) throws BagException {
       Bag<T> result = BagFactory.getInstance().getBag();
       String filename = name + ".txt";
       try {
           File bagFile = new File(filename);
-          if (bagFile.e)
-          FileReader fr = new FileReader
+          if (bagFile.exists()){
+              FileReader fr = new FileReader(filename);
+              BufferedReader br = new BufferedReader(fr);
+              String input;
+              while ((input = br.readLine()) != null) {
+                  String[] bagInput = input.split(":");
+                  T value = (T) bagInput[0];
+                  int count = Integer.parseInt(bagInput[1]);
+                  result.addWithOccurrences(value, count);
+              }
+
+          }
+
       }
+
+      catch (Exception e){
+          System.out.println("Error: " + e);
+      }
+      return result;
   }
-*/
   @Override
   public String toString() {
       String strRep = "";

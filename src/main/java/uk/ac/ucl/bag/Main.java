@@ -1,5 +1,5 @@
 package uk.ac.ucl.bag;
-
+import java.io.*;
 import java.util.Iterator;
 
 /**
@@ -8,6 +8,7 @@ import java.util.Iterator;
 public class Main
 {
   private BagFactory<String> factory = BagFactory.getInstance();
+
 
   public void print(Bag<String> bag)
   {
@@ -88,8 +89,11 @@ public class Main
       System.out.println(bag4);
       Bag<String> bag6 = bag4.subtract(bag3);
       System.out.println(bag6);
-
-
+      Bag<String> bag7 = factory.getBag();
+      bag4.saveFile("bag4");
+      bag7 = bag7.createBag("bag4");
+      System.out.println(bag7);
+      Bag<String[]>
     }
     catch (BagException e)
     {

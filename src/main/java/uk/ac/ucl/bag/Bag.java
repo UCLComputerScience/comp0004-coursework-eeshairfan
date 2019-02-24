@@ -1,6 +1,6 @@
 package uk.ac.ucl.bag;
 import java.util.Iterator;
-
+import java.io.*;
 /**
  * A Bag is a data structure that can hold a collection of values (really object references of course), along with
  * a count of how many copies of the value are in the collection.
@@ -124,6 +124,17 @@ public interface Bag<T extends Comparable> extends Iterable<T>
    */
 
   void saveFile(String name) throws BagException;
+
+  /**
+   *
+   * @param name
+   * @return
+   * @throws BagException
+   */
+
+  Bag<T> createBag(String name) throws BagException;
+
+
 
   /**
    * Create an iterator that will iterate through every value and every occurrence of each value.
