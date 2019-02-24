@@ -9,6 +9,7 @@ package uk.ac.ucl.bag;
  * setup to select which bag implementation is to be used.
  */
 import java.nio.file.Files;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.io.*;
 
@@ -130,6 +131,8 @@ public abstract class AbstractBag<T extends Comparable> implements Bag<T>
       }
       return result;
   }
+
+
   @Override
   public String toString() {
       String strRep = "";

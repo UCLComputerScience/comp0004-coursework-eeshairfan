@@ -48,14 +48,14 @@ public class LinkedListBag<T extends Comparable> extends AbstractBag<T> {
         Element<T> currentNode = this.head;
 
         while (currentNode != null)
+        {
+            if (currentNode.value.equals(value))
             {
-                if (currentNode.value.equals(value)) // Must use compareTo to compare values.
-                {
-                    currentNode.occurrences++;
-                    return;
-                }
-                currentNode = currentNode.next;
+                currentNode.occurrences++;
+                return;
             }
+            currentNode = currentNode.next;
+        }
 
         if (this.listSize < maxSize) {
             Element<T> newNode = new Element(value, 1, null);
