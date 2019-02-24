@@ -8,9 +8,7 @@ package uk.ac.ucl.bag;
  * New bag objects are created using a BagFactory, which can be configured in the application
  * setup to select which bag implementation is to be used.
  */
-import java.nio.file.Files;
-import java.util.Comparator;
-import java.util.Iterator;
+
 import java.io.*;
 
 public abstract class AbstractBag<T extends Comparable> implements Bag<T>
