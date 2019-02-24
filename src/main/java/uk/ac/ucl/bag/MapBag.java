@@ -6,20 +6,10 @@ import java.util.Iterator;
 public class MapBag<T extends Comparable> extends AbstractBag<T>
 {
 
-    private static class Element<E extends Comparable>
-    {
 
-        public int count;
-        public E value;
-        public Element(int count, E value)
-        {
-            this.count = count;
-            this.value = value;
-        }
-    }
 
     private int maxSize;
-    HashMap<Integer, Element<T>> contents;
+    HashMap<T, Integer> contents;
 
     public MapBag() throws BagException
     {
@@ -37,22 +27,22 @@ public class MapBag<T extends Comparable> extends AbstractBag<T>
             throw new BagException("Attempting to create a Bag with size less than 1");
         }
         this.maxSize = maxSize;
-        this.contents = new HashMap<Integer, Element<T>>();
+        this.contents = new HashMap<T, Integer>();
     }
 
     public void add(T value) throws BagException
     {
-        for (Element element: contents.values()){
+        for (T KeyValue: contents.keySet()){
 
-            if (element.value.compareTo(value) == 0) // Must use compareTo to compare values.
+            if (KeyValue.compareTo(value) == 0) // Must use compareTo to compare values.
             {
-                element.count ++;
+                contents.replace(KeyValue, contents.get(KeyValue) + 1);
                 return;
             }
         }
         if (contents.size() < maxSize)
         {
-            contents.put(contents.size(), new Element(1, value));
+            contents.put(value, 1);
         }
         else
         {
@@ -70,9 +60,9 @@ public class MapBag<T extends Comparable> extends AbstractBag<T>
 
     public boolean contains(T value)
     {
-        for (Element element : contents.values())
+        for (T KeyValue: contents.keySet())
         {
-            if (element.value.compareTo(value) == 0)
+            if (KeyValue.compareTo(value) == 0)
             {
                 return true;
             }
@@ -82,11 +72,11 @@ public class MapBag<T extends Comparable> extends AbstractBag<T>
 
     public int countOf(T value)
     {
-        for (Element element : contents.values())
+        for (T KeyValue: contents.keySet())
         {
-            if (element.value.compareTo(value) == 0)
+            if (KeyValue.compareTo(value) == 0)
             {
-                return element.count;
+                return contents.get(KeyValue);
             }
         }
         return 0;
@@ -94,15 +84,15 @@ public class MapBag<T extends Comparable> extends AbstractBag<T>
 
     public void remove(T value)
     {
-        for (Element element : contents.values())
-        {
-            if (element.value.compareTo(value) == 0)
-            {
-                element.count --;
+        for (T KeyValue: contents.keySet()){
 
-                if (element.count == 0)
+            if (KeyValue.compareTo(value) == 0) // Must use compareTo to compare values.
+            {
+                contents.replace(KeyValue, contents.get(KeyValue) - 1);
+
+                if (contents.get(KeyValue) == 0)
                 {
-                    contents.remove(element);
+                    contents.remove(KeyValue);
                     return;
                 }
             }
@@ -121,17 +111,19 @@ public class MapBag<T extends Comparable> extends AbstractBag<T>
 
     private class MapBagUniqueIterator implements Iterator<T>
     {
-        private int index = 0;
+
+        Iterator iterator = contents.keySet().iterator();
 
         public boolean hasNext()
         {
-            if (index < contents.size()) return true;
+            if (iterator.hasNext()) return true;
             return false;
         }
 
         public T next()
         {
-            return contents.get(index++).value;
+            return (T) iterator.next();
+
         }
     }
 
@@ -142,29 +134,48 @@ public class MapBag<T extends Comparable> extends AbstractBag<T>
 
     private class MapBagIterator implements Iterator<T>
     {
-        private int index = 0;
-        private int count = 0;
+        Iterator iterator = contents.keySet().iterator();
+        private int count = 1; //Counting Occurrences
+        private boolean check = false; //True if program has checked if Key has several occurrences and it does
+        private T Key;
 
         public boolean hasNext()
         {
-            if (index < contents.size()) {
-                if (count < contents.get(index).count) return true;
-                if ((count == contents.get(index).count) && ((index + 1) < contents.size())) return true;
+            if (check == true){ //Has occurrences to iterate through
+                if (count <= contents.get(Key)) {
+                    return true;
+                }
+                check = false; //Iterated through all the occurrences
             }
+
+            if (check == false){
+
+                if (iterator.hasNext()){
+                    count = 1; //First occurrence
+                    return true;
+                }
+            }
+
             return false;
         }
 
         public T next()
         {
-            if (count < contents.get(index).count)
-            {
-                T value = contents.get(index).value;
-                count++;
-                return value;
+            if (count == 1){ //First occurrence so get next Key
+                Key = (T) iterator.next();
+
             }
-            count = 1;
-            index++;
-            return contents.get(index).value;
+
+            if (count < contents.get(Key) || (count == contents.get(Key) && count != 1)) //Separates the keys which have more than one occurrence
+            {
+                check = true;
+                count++;
+            }
+            else { //Only had one occurrence
+                check = false;
+            }
+
+            return Key;
         }
     }
 

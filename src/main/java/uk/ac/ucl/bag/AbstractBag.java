@@ -1,3 +1,4 @@
+
 package uk.ac.ucl.bag;
 
 /**
@@ -7,7 +8,9 @@ package uk.ac.ucl.bag;
  * New bag objects are created using a BagFactory, which can be configured in the application
  * setup to select which bag implementation is to be used.
  */
+import java.nio.file.Files;
 import java.util.Iterator;
+import java.io.*;
 
 public abstract class AbstractBag<T extends Comparable> implements Bag<T>
 {
@@ -75,8 +78,43 @@ public abstract class AbstractBag<T extends Comparable> implements Bag<T>
       return result;
   }
 
+  public void saveFile(String name) throws BagException {
+      try {
+          String filename = name + ".txt";
+          File bagFile = new File(filename);
+          if (bagFile.exists()) {
+              bagFile.delete(); //Need to have empty file
+          }
+          bagFile.createNewFile();
+          FileWriter fw = new FileWriter(filename);
+          PrintWriter pw = new PrintWriter(filename);
+          String input = this.toString();
+          input = input.substring(1,input.length() - 1);
+          input = input.replaceAll(" ", "");
+          String[] inputArray = input.split(",");
+          for(String item: inputArray){
+              pw.println(item);
+          }
+          pw.close();
+      }
 
+      catch(Exception e){
+        System.out.println("Error: " + e);
+      }
+  }
 
+  /*
+
+  public Bag<T> createBag(String name) throws BagException {
+      Bag<T> result = BagFactory.getInstance().getBag();
+      String filename = name + ".txt";
+      try {
+          File bagFile = new File(filename);
+          if (bagFile.e)
+          FileReader fr = new FileReader
+      }
+  }
+*/
   @Override
   public String toString() {
       String strRep = "";

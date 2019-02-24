@@ -89,6 +89,7 @@ public class Main
       Bag<String> bag6 = bag4.subtract(bag3);
       System.out.println(bag6);
 
+
     }
     catch (BagException e)
     {

@@ -118,6 +118,14 @@ public interface Bag<T extends Comparable> extends Iterable<T>
   Bag<T> subtract(Bag<T> bag) throws BagException;
 
   /**
+   * Save contents of bag in a file
+   * @param name
+   * @throws BagException
+   */
+
+  void saveFile(String name) throws BagException;
+
+  /**
    * Create an iterator that will iterate through every value and every occurrence of each value.
    * The default iterator method (declared by Iterator) will iterate through each value only without
    * returning each occurrence. This iterator will return the full set of values including all the copies.
