@@ -93,7 +93,6 @@ public class Main
       bag4.saveFile("bag4");
       bag7 = bag7.createBag("bag4");
       System.out.println(bag7);
-      Bag<String[]>
     }
     catch (BagException e)
     {
